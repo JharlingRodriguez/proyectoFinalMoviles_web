@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
-import { AngularFireAuth } from '@angular/fire/compat/auth';
 import { AngularFirestore } from '@angular/fire/compat/firestore';
+import { map } from 'rxjs/operators';
+import { AngularFireAuth } from '@angular/fire/compat/auth';
 
 @Injectable({
   providedIn: 'root'
@@ -13,19 +14,25 @@ export class ServicioService {
     private afAuth: AngularFireAuth,
     private firestore: AngularFirestore
   ) { 
-    // Suscribirse al cambio de estado de autenticación
-    this.afAuth.authState.subscribe((recogidas) => {
-      this.usuarioActual = recogidas; // Almacena el usuario actual
+   
+    this.afAuth.authState.subscribe((usuario) => {
+      this.usuarioActual = usuario; // Almacena el usuario actual
     });
   }
 
 
-   // Método para obtener alumnos por usuario
-   obtenerAlumnosPorUsuario(usuarioUid: string) {
-    return this.firestore.collection('alumnos', ref => ref.where('usuarioUid', '==', usuarioUid)).snapshotChanges();
-  }
+  obtenerAlumnosPorUsuario(usuarioUid: string) {
+    return this.firestore.collection('alumnos', ref => ref.where('usuarioUid', '==', usuarioUid))
+      .snapshotChanges()
+      .pipe(
+        map(actions => actions.map(a => {
+          const id = a.payload.doc.id;
+          const data: any = a.payload.doc.data();
+          return { id, ...data };
+        }))
+      );
+  }
 
-  obtenerRecogidas() {
-    return this.firestore.collection('recogidas').snapshotChanges();
-  }
+
+  
 }
