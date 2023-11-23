@@ -1,0 +1,42 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-title>
+      Blank
+    </ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<!-- En tu archivo HTML (carriles.page.html) -->
+<ion-content>
+  <ion-grid>
+    <ion-row>
+      <ion-col>
+        <h2>Carril 1</h2>
+        <ion-list>
+          <ion-item *ngFor="let alumno of filtrarAlumnosPorCarril('carril1')">
+            <ion-label [style.color]="getColorBySeccion(alumno.seccion)">{{ alumno.nombre }}</ion-label>
+          </ion-item>
+        </ion-list>
+      </ion-col>
+
+      <ion-col>
+        <h2>Carril 2</h2>
+        <ion-list>
+          <ion-item *ngFor="let alumno of filtrarAlumnosPorCarril('carril2')">
+            <ion-label [style.color]="getColorBySeccion(alumno.seccion)">{{ alumno.nombre }}</ion-label>
+          </ion-item>
+        </ion-list>
+      </ion-col>
+
+      <ion-col>
+        <h2>Carril 3</h2>
+        <ion-list>
+          <ion-item *ngFor="let alumno of filtrarAlumnosPorCarril('carril3')">
+            <ion-label [style.color]="getColorBySeccion(alumno.seccion)">{{ alumno.nombre }}</ion-label>
+          </ion-item>
+        </ion-list>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+</ion-content>
+
